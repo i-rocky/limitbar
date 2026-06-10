@@ -38,9 +38,9 @@ limitbar --overlay    # floating always-on-top click-through bar
 ### Debian/Ubuntu (apt)
 
 ```sh
-curl -fsSL https://pub-85a506db1b4547ba970ecf62c38f89b4.r2.dev/rocky-oss.gpg \
+curl -fsSL https://apt.clapbox.net/rocky-oss.gpg \
   | sudo tee /usr/share/keyrings/rocky-oss.gpg >/dev/null
-echo "deb [signed-by=/usr/share/keyrings/rocky-oss.gpg] https://pub-85a506db1b4547ba970ecf62c38f89b4.r2.dev stable main" \
+echo "deb [signed-by=/usr/share/keyrings/rocky-oss.gpg] https://apt.clapbox.net stable main" \
   | sudo tee /etc/apt/sources.list.d/rocky-oss.list
 sudo apt update && sudo apt install limitbar
 ```

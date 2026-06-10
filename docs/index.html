@@ -122,9 +122,9 @@ a { color: var(--accent); }
 <section class="wrap" id="install">
   <h2>Install</h2>
   <h3>Debian/Ubuntu (apt)</h3>
-  <pre class="snippet">curl -fsSL https://pub-85a506db1b4547ba970ecf62c38f89b4.r2.dev/rocky-oss.gpg \
+  <pre class="snippet">curl -fsSL https://apt.clapbox.net/rocky-oss.gpg \
   | sudo tee /usr/share/keyrings/rocky-oss.gpg >/dev/null
-echo "deb [signed-by=/usr/share/keyrings/rocky-oss.gpg] https://pub-85a506db1b4547ba970ecf62c38f89b4.r2.dev stable main" \
+echo "deb [signed-by=/usr/share/keyrings/rocky-oss.gpg] https://apt.clapbox.net stable main" \
   | sudo tee /etc/apt/sources.list.d/rocky-oss.list
 sudo apt update &amp;&amp; sudo apt install limitbar</pre>
   <h3>macOS / Linux (Homebrew)</h3>
