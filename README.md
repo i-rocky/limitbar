@@ -33,6 +33,30 @@ limitbar -w 10        # live-refresh in the terminal every 10s
 limitbar --overlay    # floating always-on-top click-through bar
 ```
 
+On Linux the deb also installs a launcher ("limitbar" in your app menu),
+which starts the overlay with no terminal attached. From a shell, use
+`limitbar --overlay &`.
+
+### The overlay
+
+Click-through by default — your clicks land on whatever is underneath.
+**Hold Ctrl+Alt while hovering it** to unlock: the bar grows an accent
+border and becomes draggable; release Ctrl+Alt and it locks back to
+click-through. The position is remembered across restarts.
+
+Appearance lives in `~/.config/limitbar/config.toml`:
+
+```toml
+[overlay]
+background = "#0d1117"   # RRGGBB or RRGGBBAA
+opacity = 0.85           # multiplied onto the background alpha
+text = "#e6edf3"
+font_size = 12.0
+```
+
+(Global key polling needs X11 on Linux; on Wayland the unlock gesture is
+currently unavailable.)
+
 ## Install
 
 ### Debian/Ubuntu (apt)

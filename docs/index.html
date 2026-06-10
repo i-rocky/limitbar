@@ -148,8 +148,17 @@ scoop install limitbar</pre>
     <tr><th>Command</th><th>What it does</th></tr>
     <tr><td><code>limitbar</code></td><td>print the current windows once and exit</td></tr>
     <tr><td><code>limitbar -w 10</code></td><td>live-refresh in the terminal every 10 seconds</td></tr>
-    <tr><td><code>limitbar --overlay</code></td><td>floating always-on-top click-through bar (build with <code>--features overlay</code>)</td></tr>
+    <tr><td><code>limitbar --overlay</code></td><td>floating always-on-top click-through bar — also in your app menu on Linux (apt installs a launcher)</td></tr>
   </table>
+  <h3>Moving and styling the overlay</h3>
+  <p>The bar is click-through by default. <strong>Hold Ctrl+Alt while hovering it</strong> to
+  unlock — it grows an accent border and becomes draggable; release to lock it back.
+  Its position is remembered. Colors, opacity, and font size live in the config:</p>
+  <pre class="snippet">[overlay]
+background = "#0d1117"   # RRGGBB or RRGGBBAA
+opacity = 0.85
+text = "#e6edf3"
+font_size = 12.0</pre>
   <h3>Optional budgets</h3>
   <p>Anthropic doesn't publish the token caps behind Claude's windows, so percentage
   gauges for <code>claude-code</code> appear once you set budgets calibrated to your plan in

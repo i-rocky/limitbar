@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=limitbar
+GenericName=LLM usage meter
+Comment=Always-visible usage meter for LLM rate-limit windows
+Exec=limitbar --overlay
+Icon=limitbar
+Terminal=false
+Categories=Utility;Monitor;
+Keywords=llm;claude;codex;usage;limits;tokens;
+StartupNotify=false
