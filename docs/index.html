@@ -121,11 +121,23 @@ a { color: var(--accent); }
 
 <section class="wrap" id="install">
   <h2>Install</h2>
+  <h3>Debian/Ubuntu (apt)</h3>
+  <pre class="snippet">curl -fsSL https://pub-85a506db1b4547ba970ecf62c38f89b4.r2.dev/rocky-oss.gpg \
+  | sudo tee /usr/share/keyrings/rocky-oss.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/rocky-oss.gpg] https://pub-85a506db1b4547ba970ecf62c38f89b4.r2.dev stable main" \
+  | sudo tee /etc/apt/sources.list.d/rocky-oss.list
+sudo apt update &amp;&amp; sudo apt install limitbar</pre>
+  <h3>macOS / Linux (Homebrew)</h3>
+  <pre class="snippet">brew tap i-rocky/tap
+brew install limitbar</pre>
+  <h3>Windows (Scoop)</h3>
+  <pre class="snippet">scoop bucket add rocky https://github.com/i-rocky/scoop-bucket
+scoop install limitbar</pre>
   <h3>From source (overlay included)</h3>
   <pre class="snippet">cargo install --git https://github.com/i-rocky/limitbar --features overlay</pre>
-  <h3>Core only (terminal output)</h3>
-  <pre class="snippet">cargo install --git https://github.com/i-rocky/limitbar</pre>
-  <p>Prebuilt binaries via GitHub Releases, Scoop, and Homebrew are on the way.</p>
+  <p>Prebuilt binaries for Linux (x86_64/aarch64), macOS (Intel/Apple&nbsp;Silicon), and
+  Windows are on <a href="https://github.com/i-rocky/limitbar/releases">GitHub Releases</a>,
+  with SHA256 checksums. All include the overlay.</p>
 </section>
 
 <section class="wrap" id="usage">

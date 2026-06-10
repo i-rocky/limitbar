@@ -33,11 +33,40 @@ limitbar -w 10        # live-refresh in the terminal every 10s
 limitbar --overlay    # floating always-on-top click-through bar
 ```
 
-Install from source (overlay included):
+## Install
+
+### Debian/Ubuntu (apt)
+
+```sh
+curl -fsSL https://pub-85a506db1b4547ba970ecf62c38f89b4.r2.dev/rocky-oss.gpg \
+  | sudo tee /usr/share/keyrings/rocky-oss.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/rocky-oss.gpg] https://pub-85a506db1b4547ba970ecf62c38f89b4.r2.dev stable main" \
+  | sudo tee /etc/apt/sources.list.d/rocky-oss.list
+sudo apt update && sudo apt install limitbar
+```
+
+### macOS / Linux (Homebrew)
+
+```sh
+brew tap i-rocky/tap
+brew install limitbar
+```
+
+### Windows (Scoop)
+
+```powershell
+scoop bucket add rocky https://github.com/i-rocky/scoop-bucket
+scoop install limitbar
+```
+
+### From source
 
 ```sh
 cargo install --git https://github.com/i-rocky/limitbar --features overlay
 ```
+
+Prebuilt release binaries (overlay included) are also on
+[GitHub Releases](https://github.com/i-rocky/limitbar/releases).
 
 ## Providers
 
