@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>limitbar — always-visible usage meter for LLM rate limits</title>
 <meta name="description" content="limitbar keeps your Claude and Codex rate-limit windows on screen: terminal gauges or a floating click-through overlay. No login, ever.">
+<script src="https://cdn.jsdelivr.net/npm/x-zsh@0.7/x-zsh.min.js"></script>
 <style>
 :root {
   --bg: #0d1117;
@@ -90,10 +91,19 @@ a { color: var(--accent); }
     <a class="btn primary" href="#install">Install</a>
     <a class="btn ghost" href="https://github.com/i-rocky/limitbar">GitHub</a>
   </div>
-  <div class="term hero-term">claude-code  5h   <span class="fill">████████</span>░░░░░░░░  <span class="pct">52.3%</span>    109.9M tokens /  793 reqs  <span class="dim">resets 15:00 (3h 52m)</span>
-claude-code  7d   <span class="fill">███</span>░░░░░░░░░░░░░  <span class="pct">21.0%</span>      1.7B tokens / 4940 reqs
-codex        5h   <span class="fill">██</span>░░░░░░░░░░░░░░  <span class="pct">14.0%</span>  <span class="dim">resets 11:38 (0h 53m)</span>
-codex        7d   <span class="fill">█</span>░░░░░░░░░░░░░░░   <span class="pct">7.0%</span></div>
+  <div class="hero-term">
+  <x-zsh os="ubuntu" plugins="rust" dir="~/work" height="300" loop loop-delay="3500">
+    note: no setup, no login — it reads what your tools already wrote
+    cmd: limitbar
+    claude-code  5h   ████████░░░░░░░░  52.3%    109.9M tokens /  793 reqs  resets 15:00 (3h 52m)
+    claude-code  7d   ███░░░░░░░░░░░░░  21.0%      1.7B tokens / 4940 reqs
+    codex        5h   ██░░░░░░░░░░░░░░  14.0%  resets 11:38 (0h 53m)
+    codex        7d   █░░░░░░░░░░░░░░░   7.0%
+    delay[1200]:
+    cmd: limitbar --overlay
+    info: overlay running — park it anywhere, clicks pass through
+  </x-zsh>
+  </div>
 </header>
 
 <section class="wrap" id="why">
