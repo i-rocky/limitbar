@@ -65,6 +65,9 @@ scoop install limitbar
 cargo install --git https://github.com/i-rocky/limitbar --features overlay
 ```
 
+The apt repository itself lives at [i-rocky/apt](https://github.com/i-rocky/apt)
+(docs: [i-rocky.github.io/apt](https://i-rocky.github.io/apt/)).
+
 Prebuilt release binaries (overlay included) are also on
 [GitHub Releases](https://github.com/i-rocky/limitbar/releases).
 
