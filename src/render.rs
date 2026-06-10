@@ -18,11 +18,15 @@ pub fn render_line(usage: &WindowUsage, now: DateTime<Utc>) -> String {
         }
     }
 
-    line.push_str(&format!(
-        " {:>9} tokens / {:>4} reqs",
-        compact(usage.tokens.total()),
-        usage.events
-    ));
+    // Providers reporting official percentages (e.g. codex) have no
+    // token detail to show.
+    if usage.events > 0 {
+        line.push_str(&format!(
+            " {:>9} tokens / {:>4} reqs",
+            compact(usage.tokens.total()),
+            usage.events
+        ));
+    }
 
     if let Some(resets_at) = usage.resets_at {
         let remaining = resets_at.signed_duration_since(now);
@@ -84,12 +88,13 @@ mod tests {
     fn render_line_without_budget_shows_tokens() {
         let usage = WindowUsage {
             provider: "claude-code",
-            label: "7d",
+            label: "7d".to_string(),
             tokens: TokenCounts {
                 input: 1_500_000,
                 ..Default::default()
             },
             events: 3,
+            fraction: None,
             resets_at: None,
             budget_tokens: None,
         };

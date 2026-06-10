@@ -32,19 +32,25 @@ pub struct UsageEvent {
 #[derive(Debug, Clone)]
 pub struct WindowUsage {
     pub provider: &'static str,
-    pub label: &'static str,
+    pub label: String,
     pub tokens: TokenCounts,
     pub events: usize,
+    /// Authoritative used fraction reported by the provider itself
+    /// (e.g. Codex logs official percentages). Preferred over budgets.
+    pub fraction: Option<f64>,
     /// When this window resets, if the window is active.
     pub resets_at: Option<DateTime<Utc>>,
-    /// Budget from config, for percentage display.
+    /// Budget from config, for percentage display when the provider
+    /// has no authoritative fraction.
     pub budget_tokens: Option<u64>,
 }
 
 impl WindowUsage {
     pub fn used_fraction(&self) -> Option<f64> {
-        self.budget_tokens
-            .filter(|b| *b > 0)
-            .map(|b| self.tokens.total() as f64 / b as f64)
+        self.fraction.or_else(|| {
+            self.budget_tokens
+                .filter(|b| *b > 0)
+                .map(|b| self.tokens.total() as f64 / b as f64)
+        })
     }
 }

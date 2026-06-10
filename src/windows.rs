@@ -41,9 +41,10 @@ pub fn session_block(
 
     WindowUsage {
         provider,
-        label: "5h",
+        label: "5h".to_string(),
         tokens,
         events: count,
+        fraction: None,
         resets_at: active.map(|start| start + Duration::hours(SESSION_HOURS)),
         budget_tokens: budget,
     }
@@ -67,9 +68,10 @@ pub fn rolling_week(
 
     WindowUsage {
         provider,
-        label: "7d",
+        label: "7d".to_string(),
         tokens,
         events: count,
+        fraction: None,
         resets_at: None,
         budget_tokens: budget,
     }

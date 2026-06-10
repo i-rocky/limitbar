@@ -6,43 +6,39 @@ use std::path::{Path, PathBuf};
 use chrono::{DateTime, Utc};
 use serde::Deserialize;
 
-use crate::model::{TokenCounts, UsageEvent};
+use crate::config::Budget;
+use crate::model::{TokenCounts, UsageEvent, WindowUsage};
 use crate::providers::Provider;
+use crate::windows;
 
 /// Reads token usage from Claude Code's local transcripts under
 /// `~/.claude/projects/**/*.jsonl`. Fully offline; no credentials touched.
 pub struct ClaudeCode {
     projects_dir: PathBuf,
+    budget: Budget,
 }
 
 impl ClaudeCode {
-    pub fn from_home() -> Self {
+    pub fn from_home(budget: Budget) -> Self {
         let projects_dir = dirs::home_dir()
             .unwrap_or_else(|| PathBuf::from("."))
             .join(".claude")
             .join("projects");
-        Self { projects_dir }
+        Self {
+            projects_dir,
+            budget,
+        }
     }
 
     #[cfg(test)]
     pub fn with_dir(projects_dir: PathBuf) -> Self {
-        Self { projects_dir }
-    }
-}
-
-impl Provider for ClaudeCode {
-    fn name(&self) -> &'static str {
-        "claude-code"
+        Self {
+            projects_dir,
+            budget: Budget::default(),
+        }
     }
 
     fn collect(&self) -> Result<Vec<UsageEvent>, String> {
-        if !self.projects_dir.is_dir() {
-            return Err(format!(
-                "no Claude Code data at {}",
-                self.projects_dir.display()
-            ));
-        }
-
         let mut events = Vec::new();
         let mut seen = HashSet::new();
         let mut stack = vec![self.projects_dir.clone()];
@@ -62,6 +58,24 @@ impl Provider for ClaudeCode {
 
         events.sort_by_key(|e| e.timestamp);
         Ok(events)
+    }
+}
+
+impl Provider for ClaudeCode {
+    fn name(&self) -> &'static str {
+        "claude-code"
+    }
+
+    fn detected(&self) -> bool {
+        self.projects_dir.is_dir()
+    }
+
+    fn windows(&self, now: DateTime<Utc>) -> Result<Vec<WindowUsage>, String> {
+        let events = self.collect()?;
+        Ok(vec![
+            windows::session_block("claude-code", &events, now, self.budget.five_hour_tokens),
+            windows::rolling_week("claude-code", &events, now, self.budget.weekly_tokens),
+        ])
     }
 }
 

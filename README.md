@@ -3,24 +3,37 @@
 Always-visible usage meter for LLM rate-limit windows.
 
 LLM subscriptions meter you in invisible windows — Claude's 5-hour session
-and weekly caps being the prime example — and you only find out when you hit
-the wall. `limitbar` keeps the current windows on screen: in your terminal,
-or as a tiny translucent click-through bar floating above your editor.
+and weekly caps, Codex's 5-hour and weekly limits — and you only find out
+when you hit the wall. `limitbar` keeps the current windows on screen: in
+your terminal, or as a tiny translucent click-through bar floating above
+your editor.
 
 ```
 claude-code  5h   ████████░░░░░░░░  52.3%    109.9M tokens /  793 reqs  resets 15:00 (3h 52m)
 claude-code  7d   ███░░░░░░░░░░░░░  21.0%      1.7B tokens / 4940 reqs
+codex        5h   ██░░░░░░░░░░░░░░  14.0%  resets 11:38 (0h 53m)
+codex        7d   █░░░░░░░░░░░░░░░   7.0%
 ```
 
-## Usage
+## No login. Ever.
+
+limitbar never asks you to authenticate and never talks to a server on its
+own. If you already use Claude Code or Codex CLI, those tools have written
+everything limitbar needs onto your own disk — transcripts and session
+logs. limitbar just reads them. Tools that aren't installed are silently
+skipped.
+
+## Running it
+
+There is no setup. Install the binary, run it:
 
 ```sh
-limitbar              # print current windows once
+limitbar              # print current windows once and exit
 limitbar -w 10        # live-refresh in the terminal every 10s
 limitbar --overlay    # floating always-on-top click-through bar
 ```
 
-The overlay requires building with the `overlay` feature:
+Install from source (overlay included):
 
 ```sh
 cargo install --git https://github.com/i-rocky/limitbar --features overlay
@@ -28,25 +41,19 @@ cargo install --git https://github.com/i-rocky/limitbar --features overlay
 
 ## Providers
 
-### claude-code
+| Provider | Status | Data source | Accuracy |
+|---|---|---|---|
+| `claude-code` | ✅ | `~/.claude/projects/**/*.jsonl` | exact token counts, deduped per billed response; window % needs a budget in config (Anthropic doesn't publish the caps) |
+| `codex` | ✅ | `~/.codex/sessions/**/*.jsonl` | **official** used-percentages logged by Codex itself — no estimation |
+| `cursor` | planned | Cursor's stored session + their usage API | needs a network call with the token Cursor already saved; same zero-prompt rule |
+| `antigravity` | planned | local app data | format not yet mapped |
 
-Reads Claude Code's local transcripts (`~/.claude/projects/**/*.jsonl`) —
-fully offline, no credentials touched, no network calls. Token counts are
-exact (deduplicated per billed response); the 5-hour session block mirrors
-how Claude's windows open (top of the hour of the first request after the
-previous block expires).
+Adding a provider is one file implementing the `Provider` trait in
+`src/providers/` — read what the app already wrote, return windows.
 
-**Honesty note:** Anthropic does not publish the token budgets behind the
-session/weekly caps, so absolute percentages need a budget you supply in
-config. Without one, limitbar shows raw totals and reset times — which is
-usually what you act on anyway.
+## Configuration (optional)
 
-More providers (Codex CLI, API rate-limit headers) are planned; the
-`Provider` trait in `src/providers/` is the seam.
-
-## Configuration
-
-`~/.config/limitbar/config.toml` (all optional):
+`~/.config/limitbar/config.toml`:
 
 ```toml
 [budgets.claude-code]
@@ -54,7 +61,10 @@ five_hour_tokens = 500000000
 weekly_tokens = 3000000000
 ```
 
-With budgets set, the gauges show percentages; without, raw totals.
+Claude doesn't publish its token budgets, so percentages for `claude-code`
+appear once you set budgets calibrated to your plan. Without them you still
+get raw totals and reset times. Codex needs no budget — its percentages are
+official.
 
 ## Development
 
