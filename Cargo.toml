@@ -5,6 +5,17 @@ edition = "2024"
 description = "Always-visible usage meter for LLM rate-limit windows"
 license = "MIT"
 repository = "https://github.com/i-rocky/limitbar"
+authors = ["Rocky <smrockypk@gmail.com>"]
+homepage = "https://i-rocky.github.io/limitbar/"
+
+[package.metadata.deb]
+section = "utils"
+priority = "optional"
+extended-description = """\
+limitbar keeps LLM rate-limit windows visible: Claude Code and Codex
+session/weekly usage in the terminal or a floating click-through overlay.
+It reads data the user's own tools already wrote locally and never
+prompts for authentication."""
 
 [dependencies]
 chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
